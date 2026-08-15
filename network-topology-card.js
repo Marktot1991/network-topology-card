@@ -176,3 +176,12 @@ class NetworkTopologyCard extends HTMLElement {
 }
 
 customElements.define('network-topology-card', NetworkTopologyCard);
+
+// เติมโค้ดด้านล่างนี้ต่อท้ายลงไป เพื่อลงทะเบียนให้โชว์ในหน้า UI Add Card
+window.customCards = window.customCards || [];
+window.customCards.push({
+  type: "network-topology-card",
+  name: "Network Topology", 
+  description: "A custom card for displaying network topology and devices status.",
+  preview: true // ให้แสดงหน้า Preview เวลาค้นหาเจอ
+});
