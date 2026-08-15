@@ -38,12 +38,10 @@ class NetworkTopologyCard extends HTMLElement {
                 .badge-online { background: rgba(76, 175, 80, 0.2); color: #2e7d32; }
                 .badge-offline { background: rgba(244, 67, 54, 0.2); color: #c62828; }
 
-                /* ========================================= */
                 /* บังคับ Grid สำหรับอุปกรณ์ ให้เรียง 4 แถว เสมอ */
-                /* ========================================= */
                 .devices-grid { 
                     display: grid; 
-                    grid-template-columns: repeat(4, 1fr); /* จุดที่แก้ไข: บังคับ 4 คอลัมน์ */
+                    grid-template-columns: repeat(4, 1fr); 
                     gap: 12px; 
                     width: 100%; 
                     padding-top: 20px; 
@@ -52,7 +50,7 @@ class NetworkTopologyCard extends HTMLElement {
                     padding-right: 16px; 
                 }
                 
-                /* ปรับขนาดอัตโนมัติเมื่อดูในมือถือ (เพื่อไม่ให้แคบเกินไป) */
+                /* ปรับขนาดอัตโนมัติเมื่อดูในมือถือ */
                 @media only screen and (max-width: 800px) {
                     .devices-grid { grid-template-columns: repeat(2, 1fr); }
                 }
@@ -63,15 +61,21 @@ class NetworkTopologyCard extends HTMLElement {
                 .device-card { display: flex; align-items: center; padding: 10px; border: 1px solid var(--divider-color); border-radius: 10px; background: var(--card-background-color); transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
                 .device-card:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
                 
-                /* สถานะ Online / Offline ใน Card */
+                /* สถานะจุด Online / Offline ใน Card */
                 .status-indicator { width: 10px; height: 10px; border-radius: 50%; margin-right: 12px; flex-shrink: 0; }
                 .status-on { background: #4caf50; box-shadow: 0 0 6px rgba(76,175,80,0.6); }
                 .status-off { background: #f44336; }
                 
+                /* จัดระเบียบตัวหนังสือใน Card */
                 .device-details { display: flex; flex-direction: column; overflow: hidden; }
                 .device-name { font-size: 13px; font-weight: 600; color: var(--primary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
                 .device-ip { font-size: 11px; color: var(--secondary-text-color); font-family: monospace; }
                 .device-icon { margin-right: 8px; color: var(--paper-item-icon-color); }
+                
+                /* ตัวหนังสือสถานะ Connected / Disconnected ที่เพิ่มเข้ามาใหม่ */
+                .status-text { font-size: 10px; font-weight: bold; margin-top: 2px; }
+                .text-on { color: #4caf50; }
+                .text-off { color: #f44336; }
             `;
             this.card.appendChild(style); 
             this.card.appendChild(this.content); 
@@ -121,6 +125,11 @@ class NetworkTopologyCard extends HTMLElement {
             if (isConnected) onlineCount++; else offlineCount++;
             
             const statusClass = isConnected ? 'status-on' : 'status-off';
+            
+            // ตัวแปรสำหรับข้อความ Connected / Disconnected ใต้เลข IP
+            const connText = isConnected ? 'Connected' : 'Disconnected';
+            const connTextClass = isConnected ? 'text-on' : 'text-off';
+
             const icon = device.icon || 'mdi:laptop';
             
             devicesHtml += `
@@ -130,6 +139,7 @@ class NetworkTopologyCard extends HTMLElement {
                     <div class="device-details">
                         <span class="device-name" title="${name}">${name}</span>
                         <span class="device-ip">${ip}</span>
+                        <span class="status-text ${connTextClass}">${connText}</span>
                     </div>
                 </div>
             `;
