@@ -38,8 +38,28 @@ class NetworkTopologyCard extends HTMLElement {
                 .badge-online { background: rgba(76, 175, 80, 0.2); color: #2e7d32; }
                 .badge-offline { background: rgba(244, 67, 54, 0.2); color: #c62828; }
 
-                /* Grid สำหรับอุปกรณ์ (รองรับอุปกรณ์เยอะๆ) */
-                .devices-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; width: 100%; padding-top: 20px; box-sizing: border-box; padding-left: 16px; padding-right: 16px; }
+                /* ========================================= */
+                /* บังคับ Grid สำหรับอุปกรณ์ ให้เรียง 4 แถว เสมอ */
+                /* ========================================= */
+                .devices-grid { 
+                    display: grid; 
+                    grid-template-columns: repeat(4, 1fr); /* จุดที่แก้ไข: บังคับ 4 คอลัมน์ */
+                    gap: 12px; 
+                    width: 100%; 
+                    padding-top: 20px; 
+                    box-sizing: border-box; 
+                    padding-left: 16px; 
+                    padding-right: 16px; 
+                }
+                
+                /* ปรับขนาดอัตโนมัติเมื่อดูในมือถือ (เพื่อไม่ให้แคบเกินไป) */
+                @media only screen and (max-width: 800px) {
+                    .devices-grid { grid-template-columns: repeat(2, 1fr); }
+                }
+                @media only screen and (max-width: 450px) {
+                    .devices-grid { grid-template-columns: repeat(1, 1fr); }
+                }
+
                 .device-card { display: flex; align-items: center; padding: 10px; border: 1px solid var(--divider-color); border-radius: 10px; background: var(--card-background-color); transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
                 .device-card:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
                 
